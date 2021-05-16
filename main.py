@@ -12,8 +12,8 @@ import os
 if __name__ == '__main__':
 
     # Папки куда выводить
-    masters = 'database/masters.csv'
-    pioners = 'database/pioners.csv'
+    masters = 'masters'
+    pioners = 'pioners'
     results = 'results'
     stock = 'stock'
 

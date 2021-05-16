@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+import sqlalchemy
 import os
 
 
@@ -9,12 +9,15 @@ class DBManager:
         self.df_name = df_name
         self.threshold = threshold1
         self.m_threshold = threshold_mean
-        self.v_columns = ['vec_mean', 'vec1', 'vec2', 'vec3', 'vec4', 'vec5', 'vec6', 'vec7', 'vec8', 'vec9', 'vec10']
 
         print('Loading ' + self.df_name + ' ...', end='')
-
-        if os.path.isfile(df_name):
-            self.df = pd.read_csv(df_name)
+        creds = open('./db.cred', 'r').read().replace('\n', '')
+        self.engine = sqlalchemy.create_engine(f"mariadb+pymysql://{creds}/hauren_mind?charset=utf8mb4", echo=True)
+        self.engine.connect()
+        self.engine.execute("USE hauren_mind")
+        if True:
+            self.df = pd.read_sql_table(df_name, self.engine, index_col='index')
+            self.v_columns = ['vec_mean', 'vec1', 'vec2', 'vec3', 'vec4', 'vec5', 'vec6', 'vec7', 'vec8', 'vec9', 'vec10']
 
             for col in self.v_columns:
                 new_vectors = []
@@ -23,7 +26,10 @@ class DBManager:
                     if el[col] == 'None':
                         new_vectors.append('None')
                     else:
-                        new_vectors.append(np.array(list(map(float, el[col][1: -1].split()))))
+                        try:
+                            new_vectors.append(np.array(list(map(float, el[col][1: -1].split()))))
+                        except Exception as e:
+                            pass
 
                 self.df[col] = new_vectors
         else:
@@ -77,4 +83,6 @@ class DBManager:
         return new
 
     def save(self):
-        self.df.to_csv(self.df_name, index=False)
+        self.df.to_csv(f"./database/{self.df_name}", index=False)
+        self.df.to_sql(self.df_name, self.engine, if_exists='replace')
+        b = 0
