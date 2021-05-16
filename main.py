@@ -43,7 +43,15 @@ if __name__ == '__main__':
 
     # Обрабатываем результаты
     names, sizes = calculate_results(results)
+    names[np.argmin(sizes)]
+    pioners = dict(zip(names, sizes))
+    for i in range((len(p_df.df))):
+        el = p_df.df.loc[i]
+        for n in pioners.keys():
+            if p_df.df.loc[i]['name'] == n:
+                p_df.df.at[i, 'total_photos'] = pioners[n]
+                b = 0
+
     m_df.save()
     p_df.save()
 
-    print(names[np.argmin(sizes)])
