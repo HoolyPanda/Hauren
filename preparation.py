@@ -23,8 +23,9 @@ def check_results(folder, m_df, p_df):
             nm = info.readline()
             if nm != fold:
                 p_df.change_name(nm, fold)
+                # TODO: English, check this shit
             pioners_set.add(nm)
-
+    # TODO: remove name from df if folder deited
     return masters_set, pioners_set
 
 

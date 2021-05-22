@@ -12,7 +12,10 @@ def create_folder(folder, from_folder, photo, place):
     :param place: Рамка фото
     :param stock: Место для всех фото
     """
-    os.mkdir(folder)
+    try:
+        os.mkdir(folder)
+    except Exception as e:
+        print(e)
     img = Image.open(from_folder + '/' + photo)
     dr = ImageDraw.Draw(img)
     dr.rectangle((place[3], place[0], place[1], place[2]))

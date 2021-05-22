@@ -14,6 +14,7 @@ class DBManager:
         creds = open('./db.cred', 'r').read().replace('\n', '')
         self.engine = sqlalchemy.create_engine(f"mariadb+pymysql://{creds}/hauren_mind?charset=utf8mb4", echo=True)
         self.engine.connect()
+        self.db_metadata = sqlalchemy.MetaData(bind=self.engine)
         self.engine.execute("USE hauren_mind")
         if True:
             self.df = pd.read_sql_table(df_name, self.engine, index_col='index')
