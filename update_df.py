@@ -15,7 +15,7 @@ import face_recognition
 def get_random_string(length):
     letters = string.ascii_letters + string.digits
     result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str
+    return (f'={result_str}')
 
 
 def update_masters(folder, res_fold, master_db, master_set, stock_fold):

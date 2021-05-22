@@ -12,7 +12,7 @@ class DBManager:
 
         print('Loading ' + self.df_name + ' ...', end='')
         creds = open('./db.cred', 'r').read().replace('\n', '')
-        self.engine = sqlalchemy.create_engine(f"mariadb+pymysql://{creds}/hauren_mind?charset=utf8mb4", echo=True)
+        self.engine = sqlalchemy.create_engine(f"mariadb+pymysql://{creds}/hauren_mind?charset=utf8mb4")
         self.engine.connect()
         self.db_metadata = sqlalchemy.MetaData(bind=self.engine)
         self.engine.execute("USE hauren_mind")
@@ -33,6 +33,15 @@ class DBManager:
                             pass
 
                 self.df[col] = new_vectors
+            for p_id in range(len(self.df)):
+                photos = []
+                a = self.df.loc[p_id]
+                a = self.df.loc[p_id]['uploaded_photos']
+                # for p in self.df.loc[p_id]['uploaded_photos'].split(', '):
+                #     if p != '':
+                #         photos.append(p)
+                # self.df.loc[p_id]['uploaded_photos'] = photos
+                            
         else:
             self.df = pd.DataFrame(columns=(['name'] + self.v_columns))
 
@@ -85,5 +94,6 @@ class DBManager:
 
     def save(self):
         self.df.to_csv(f"./database/{self.df_name}", index=False)
+        print(f'Uploading DB...')
         self.df.to_sql(self.df_name, self.engine, if_exists='replace')
-        b = 0
+        print(f'Upload completed')

@@ -5,3 +5,4 @@ sudo systemctl enable mariadb.service
 sudo systemctl status mariadb.service
 sudo mysql -u root -p
 # GRANT ALL PRIVILEGES ON *.* TO 'username'@'1.2.3.4' WITH GRANT OPTION;
+# GRANT ALL PRIVILEGES ON *.* TO 'USERNAME'@'%' IDENTIFIED BY 'PASSWORD' WITH GRANT OPTION;
